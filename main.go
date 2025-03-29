@@ -9,5 +9,6 @@ func main() {
 	router := gin.Default()
 	router.POST("/check-grammer", handler.CheckGrammer)
 	router.POST("/notes", handler.UploadMarkdown)
+	router.GET("/notes/:filename/render", handler.GetMarkdownContentAsHtml)
 	router.Run()
 }
