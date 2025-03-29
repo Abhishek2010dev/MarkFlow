@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/Abhishek2010dev/MarkFlow/grammer"
 	"github.com/Abhishek2010dev/MarkFlow/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -42,9 +42,14 @@ func CheckGrammerHandler(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(content)
+	grammerError, err := grammer.CheckGrammer(content)
+	if err != nil {
+		log.Println(err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to check grammer",
+		})
+		return
+	}
 
-	c.JSON(200, gin.H{
-		"filename": file.Filename,
-	})
+	c.JSON(http.StatusOK, grammerError)
 }
