@@ -20,3 +20,11 @@ func GetFileContent(file *multipart.File) ([]byte, error) {
 
 	return content, nil
 }
+
+func ReadFileContent(filename string) ([]byte, error) {
+	content, err := os.ReadFile(filename)
+	if err != nil {
+		return nil, fmt.Errorf("error reading file %s: %w", filename, err)
+	}
+	return content, nil
+}

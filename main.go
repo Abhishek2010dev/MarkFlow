@@ -7,7 +7,7 @@ import (
 
 func main() {
 	router := gin.Default()
-	router.POST("/check", handler.CheckGrammerHandler)
-	router.POST("/upload", handler.UploadMarkdownHandler)
+	router.POST("/check-grammer", handler.CheckGrammerHandler)
+	router.POST("/notes", handler.UploadMarkdownHandler)
 	router.Run()
 }
