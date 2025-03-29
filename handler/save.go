@@ -22,6 +22,13 @@ func UploadMarkdownHandler(c *gin.Context) {
 		return
 	}
 
+	if utils.FileExits(file.Filename) {
+		c.JSON(http.StatusConflict, gin.H{
+			"error": "File already exits",
+		})
+		return
+	}
+
 	if err := c.SaveUploadedFile(file, "./uploads/"+file.Filename); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Failed to upload file",
