@@ -3,6 +3,7 @@ package handler
 import (
 	"log"
 	"net/http"
+	"path/filepath"
 
 	"github.com/Abhishek2010dev/MarkFlow/grammer"
 	"github.com/Abhishek2010dev/MarkFlow/utils"
@@ -16,9 +17,9 @@ func CheckGrammer(c *gin.Context) {
 		return
 	}
 
-	if !utils.IsValidMarkdown(file.Filename) {
+	if filepath.Ext(file.Filename) != ".md" {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"Error": "File type must be Markdown.",
+			"error": "Invalid file type, only .md files are allowed",
 		})
 		return
 	}

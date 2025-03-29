@@ -16,9 +16,9 @@ func UploadMarkdown(c *gin.Context) {
 		return
 	}
 
-	if !utils.IsValidMarkdown(file.Filename) {
+	if filepath.Ext(file.Filename) != ".md" {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "File type must be Markdown.",
+			"error": "Invalid file type, only .md files are allowed",
 		})
 		return
 	}

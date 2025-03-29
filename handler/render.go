@@ -12,15 +12,25 @@ import (
 )
 
 func GetMarkdownContentAsHtml(c *gin.Context) {
-	filename := filepath.Join("./uploads/", c.Param("filename"))
-	if !utils.FileExists(filename) {
+	rawFilename := c.Param("filename")
+	filename := filepath.Base(rawFilename)
+	if filepath.Ext(filename) != ".md" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid file type, only .md files are allowed",
+		})
+		return
+	}
+
+	filePath := filepath.Join("./uploads", filename) // Ensure correct directory
+
+	if !utils.FileExists(filePath) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "File does not exist",
 		})
 		return
 	}
 
-	content, err := utils.ReadFileContent(filename)
+	content, err := utils.ReadFileContent(filePath) // Ensure this returns []byte
 	if err != nil {
 		log.Println(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -40,3 +50,4 @@ func GetMarkdownContentAsHtml(c *gin.Context) {
 
 	c.Data(http.StatusOK, "text/html; charset=utf-8", buf.Bytes())
 }
+
