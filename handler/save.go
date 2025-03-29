@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"path/filepath"
 
 	"github.com/Abhishek2010dev/MarkFlow/utils"
 	"github.com/gin-gonic/gin"
@@ -22,19 +23,22 @@ func UploadMarkdown(c *gin.Context) {
 		return
 	}
 
-	if utils.FileExits(file.Filename) {
+	filename := filepath.Base(file.Filename)
+	if utils.FileExists(filename) {
 		c.JSON(http.StatusConflict, gin.H{
-			"error": "File already exits",
+			"error": "File already exists",
 		})
 		return
 	}
 
-	if err := c.SaveUploadedFile(file, "./uploads/"+file.Filename); err != nil {
+	savePath := filepath.Join("./uploads", filename)
+	if err := c.SaveUploadedFile(file, savePath); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Failed to upload file",
 		})
 		return
 	}
 
-	c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
+	c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", filename))
 }
+

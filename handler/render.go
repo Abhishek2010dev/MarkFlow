@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"log"
 	"net/http"
+	"path/filepath"
 
 	"github.com/Abhishek2010dev/MarkFlow/utils"
 	"github.com/gin-gonic/gin"
@@ -11,8 +12,8 @@ import (
 )
 
 func GetMarkdownContentAsHtml(c *gin.Context) {
-	filename := "./uploads/" + c.Param("filename")
-	if !utils.FileExits(filename) {
+	filename := filepath.Join("./uploads/", c.Param("filename"))
+	if !utils.FileExists(filename) {
 		c.JSON(http.StatusNotFound, gin.H{
 			"error": "File does not exist",
 		})
@@ -39,4 +40,3 @@ func GetMarkdownContentAsHtml(c *gin.Context) {
 
 	c.Data(http.StatusOK, "text/html; charset=utf-8", buf.Bytes())
 }
-

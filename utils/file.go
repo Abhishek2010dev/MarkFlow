@@ -8,8 +8,9 @@ import (
 	"path/filepath"
 )
 
-func FileExits(filename string) bool {
-	_, err := os.Stat(filename)
+func FileExists(filename string) bool {
+	path := filepath.Join("./uploads", filename)
+	_, err := os.Stat(path)
 	return !os.IsNotExist(err)
 }
 
