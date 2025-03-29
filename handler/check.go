@@ -42,7 +42,7 @@ func CheckGrammerHandler(c *gin.Context) {
 		return
 	}
 
-	grammerError, err := grammer.CheckGrammer(content)
+	grammerError, err := grammer.CheckGrammer(string(content))
 	if err != nil {
 		log.Println(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
