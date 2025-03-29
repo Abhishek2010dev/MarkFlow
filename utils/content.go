@@ -6,14 +6,8 @@ import (
 	"mime/multipart"
 )
 
-func GetFileContent(file *multipart.FileHeader) (string, error) {
-	openedFile, err := file.Open()
-	if err != nil {
-		return "", fmt.Errorf("error opening file: %w", err)
-	}
-	defer openedFile.Close()
-
-	content, err := io.ReadAll(openedFile)
+func GetFileContent(file *multipart.File) (string, error) {
+	content, err := io.ReadAll(*file)
 	if err != nil {
 		return "", fmt.Errorf("error reading file: %w", err)
 	}

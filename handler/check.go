@@ -33,7 +33,7 @@ func CheckGrammerHandler(c *gin.Context) {
 	}
 	defer f.Close()
 
-	content, err := utils.GetFileContent(file)
+	content, err := utils.GetFileContent(&f)
 	if err != nil {
 		log.Println(err)
 		c.JSON(http.StatusInternalServerError, gin.H{
