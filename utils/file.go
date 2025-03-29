@@ -5,6 +5,7 @@ import (
 	"io"
 	"mime/multipart"
 	"os"
+	"path/filepath"
 )
 
 func FileExits(filename string) bool {
@@ -27,4 +28,21 @@ func ReadFileContent(filename string) ([]byte, error) {
 		return nil, fmt.Errorf("error reading file %s: %w", filename, err)
 	}
 	return content, nil
+}
+
+func ListFiles(dirPath string) ([]string, error) {
+	var files []string
+	err := filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if !info.IsDir() {
+			files = append(files, info.Name())
+		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return files, nil
 }
